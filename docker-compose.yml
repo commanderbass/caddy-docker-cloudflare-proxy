@@ -1,9 +1,9 @@
-version: "3.7"
 services:
   caddy:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+    container_name: caddy
     ports:
       - 80:80
       - 443:443
@@ -17,6 +17,28 @@ services:
       - caddy_data:/data
     restart: unless-stopped
 
+ 
+  portainer:
+    image: portainer/portainer-ee:latest
+    container_name: portainer
+    restart: always
+    dns:
+      - 1.1.1.1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+     - 127.0.0.1:8000:8000
+     - 127.0.0.1:9000:9000
+    networks:
+     - backend
+    labels:
+      caddy: $(yourdomain)
+      caddy.reverse_proxy: portainer:9000
+      caddy.tls.dns: $(API_Key)
+    depends_on:
+      - caddy
+     
 networks:
         frontend:
                 internal: false
@@ -26,6 +48,7 @@ networks:
                 internal: true
                 external: false
                 driver: bridge
-
+        
 volumes:
+  portainer_data: {}
   caddy_data: {}
