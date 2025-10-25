@@ -1,5 +1,5 @@
-# caddy-docker-cloudflare-proxy
-caddy with labels for docker + cloudflare api
+# docker-caddy-with-proxy-for-portainer
+caddy with labels for docker + cloudflare api + Portainer
 
 
 https://github.com/lucaslorentz/caddy-docker-proxy
